@@ -22,38 +22,39 @@ function Home() {
 
   return (
     <section>
-      <h2>Inventario</h2>
+      <h2 className="text-2xl font-bold mb-2">Inventario</h2>
       <p>Revisa el stock de los productos del supermercado. Los que tienen poco stock salen en rojo.</p>
 
       <input
         type="text"
+        className="w-full max-w-xs p-2 my-3 border border-gray-400 rounded bg-white"
         placeholder="Buscar producto..."
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
       />
 
-      <table>
-        <thead>
+      <table className="w-full bg-white text-left">
+        <thead className="bg-green-50">
           <tr>
-            <th>Producto</th>
-            <th>Categoria</th>
-            <th>Stock</th>
-            <th>Precio</th>
+            <th className="p-2 border-b border-gray-200">Producto</th>
+            <th className="p-2 border-b border-gray-200">Categoria</th>
+            <th className="p-2 border-b border-gray-200">Stock</th>
+            <th className="p-2 border-b border-gray-200">Precio</th>
           </tr>
         </thead>
         <tbody>
           {filtrados.map((p) => (
             <tr key={p.id}>
-              <td>{p.nombre}</td>
-              <td>{p.categoria}</td>
-              <td className={p.stock < 10 ? 'poco-stock' : ''}>{p.stock}</td>
-              <td>${p.precio}</td>
+              <td className="p-2 border-b border-gray-200">{p.nombre}</td>
+              <td className="p-2 border-b border-gray-200">{p.categoria}</td>
+              <td className={'p-2 border-b border-gray-200 ' + (p.stock < 10 ? 'text-red-700 font-bold' : '')}>{p.stock}</td>
+              <td className="p-2 border-b border-gray-200">${p.precio}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {filtrados.length === 0 && <p>No se encontraron productos.</p>}
+      {filtrados.length === 0 && <p className="mt-3">No se encontraron productos.</p>}
     </section>
   )
 }

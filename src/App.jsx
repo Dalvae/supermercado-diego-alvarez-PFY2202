@@ -7,13 +7,14 @@ import NoEncontrada from './pages/NoEncontrada.jsx'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Supermercado Don Diego</h1>
-        <p>Gestion de inventario</p>
+    <div className="min-h-screen flex flex-col bg-gray-100 text-gray-800">
+      <header className="bg-green-700 text-white text-center p-4">
+        <h1 className="text-3xl font-bold">Supermercado Don Diego</h1>
+        <p className="mt-1">Gestion de inventario</p>
       </header>
 
-      <main className="contenido">
+      {/* el pb-24 es para que el menu fijo no tape el contenido */}
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 pt-5 pb-24">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/quienes-somos" element={<QuienesSomos />} />
