@@ -4,9 +4,14 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import './index.css'
 
+import { ArticulosProvider } from './context/ArticulosContext.jsx'
+
 // aca envuelvo todo en el router como en la guia
+// y el provider de articulos para que cualquier pagina pueda leer el estado global
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <App />
+    <ArticulosProvider>
+      <App />
+    </ArticulosProvider>
   </BrowserRouter>
 )
