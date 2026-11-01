@@ -1,22 +1,30 @@
-import { Link, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+
+const links = [
+  { ruta: '/', texto: 'Inventario' },
+  { ruta: '/quienes-somos', texto: 'Quiénes somos' },
+  { ruta: '/tiendas', texto: 'Nuestra tienda' },
+]
 
 function Menu() {
-  const location = useLocation()
-
-  // para marcar en que pagina estoy
-  function claseLink(ruta) {
-    if (location.pathname === ruta) {
-      return 'px-3 py-1.5 rounded bg-green-400 text-green-950 font-bold'
+  // NavLink ya sabe si esta activo, asi no uso useLocation
+  function clase({ isActive }) {
+    if (isActive) {
+      return 'px-3 sm:px-4 py-2 rounded-full text-sm whitespace-nowrap font-semibold bg-blue-900 text-white'
     } else {
-      return 'px-3 py-1.5 rounded text-white hover:bg-green-600'
+      return 'px-3 sm:px-4 py-2 rounded-full text-sm whitespace-nowrap text-slate-600 hover:bg-slate-100'
     }
   }
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 flex justify-around bg-green-900 py-3.5">
-      <Link to="/" className={claseLink('/')}>Inicio</Link>
-      <Link to="/quienes-somos" className={claseLink('/quienes-somos')}>Quienes somos</Link>
-      <Link to="/tiendas" className={claseLink('/tiendas')}>Nuestras tiendas</Link>
+    <nav className="fixed bottom-4 inset-x-0 flex justify-center px-4">
+      <div className="flex gap-1 bg-white/90 backdrop-blur border border-slate-200 shadow-lg rounded-full p-1.5">
+        {links.map((l) => (
+          <NavLink key={l.ruta} to={l.ruta} end className={clase}>
+            {l.texto}
+          </NavLink>
+        ))}
+      </div>
     </nav>
   )
 }

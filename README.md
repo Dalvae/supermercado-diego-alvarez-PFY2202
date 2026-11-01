@@ -1,8 +1,8 @@
 # supermercado - inventario
 
-Formativo semana 1 de Desarrollo Frontend II (PFY2202). Es un sitio react de inventario para un supermercado, hecho con vite, react router v6 y tailwind para los estilos.
+Formativo semana 1 de Desarrollo Frontend II (PFY2202). Es un sitio react de inventario para el Supermercado Belén de Chonchi, hecho con vite, react router v6 y tailwind para los estilos.
 
-Tiene un home con la tabla de productos (los datos estan en un array en `src/pages/Home.jsx`) y un menu abajo para ir a "Quienes somos" y "Nuestras tiendas".
+Tiene un home con la tabla de productos (los datos estan en un array en `src/pages/Home.jsx`) y un menu abajo para ir a "Quienes somos" y "Nuestra tienda". La busqueda filtra por nombre o categoria y no le importan mayusculas ni tildes.
 
 ## como correrlo
 
