@@ -6,10 +6,9 @@ import './index.css'
 
 import { ArticulosProvider } from './context/ArticulosContext.jsx'
 
-// aca envuelvo todo en el router como en la guia
-// y el provider de articulos para que cualquier pagina pueda leer el estado global
+// basename para que las rutas funcionen en gh-pages
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+  <BrowserRouter basename={import.meta.env.BASE_URL}>
     <ArticulosProvider>
       <App />
     </ArticulosProvider>

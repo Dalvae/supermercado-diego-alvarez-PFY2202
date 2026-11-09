@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "nombre": "Arroz grado 1 (1 kg)",
+    "marca": "Tucapel",
+    "categoria": "Abarrotes",
+    "precio": 1290,
+    "stock": 120
+  },
+  {
+    "id": 2,
+    "nombre": "Harina sin polvos (1 kg)",
+    "marca": "Selecta",
+    "categoria": "Abarrotes",
+    "precio": 1190,
+    "stock": 95
+  },
+  {
+    "id": 3,
+    "nombre": "Aceite vegetal (1 L)",
+    "marca": "Chef",
+    "categoria": "Abarrotes",
+    "precio": 2490,
+    "stock": 8
+  },
+  {
+    "id": 4,
+    "nombre": "Leche entera (1 L)",
+    "marca": "Colun",
+    "categoria": "Lácteos",
+    "precio": 1050,
+    "stock": 60
+  },
+  {
+    "id": 5,
+    "nombre": "Yogurt natural (150 g)",
+    "marca": "Soprole",
+    "categoria": "Lácteos",
+    "precio": 450,
+    "stock": 5
+  },
+  {
+    "id": 6,
+    "nombre": "Pan amasado (kg)",
+    "marca": "Panadería Belén",
+    "categoria": "Panadería",
+    "precio": 2200,
+    "stock": 40
+  },
+  {
+    "id": 7,
+    "nombre": "Papas (malla 5 kg)",
+    "marca": "Chiloé",
+    "categoria": "Frutas y verduras",
+    "precio": 4990,
+    "stock": 30
+  },
+  {
+    "id": 8,
+    "nombre": "Manzanas (1 kg)",
+    "marca": "Del Valle",
+    "categoria": "Frutas y verduras",
+    "precio": 1590,
+    "stock": 70
+  },
+  {
+    "id": 9,
+    "nombre": "Café molido (250 g)",
+    "marca": "Nescafé",
+    "categoria": "Abarrotes",
+    "precio": 4590,
+    "stock": 22
+  },
+  {
+    "id": 10,
+    "nombre": "Bebida cola (1.5 L)",
+    "marca": "Coca-Cola",
+    "categoria": "Bebidas",
+    "precio": 1890,
+    "stock": 2
+  },
+  {
+    "id": 11,
+    "nombre": "Detergente (3 L)",
+    "marca": "Omo",
+    "categoria": "Limpieza",
+    "precio": 6990,
+    "stock": 12
+  },
+  {
+    "id": 12,
+    "nombre": "Fideos espagueti (400 g)",
+    "marca": "Carozzi",
+    "categoria": "Abarrotes",
+    "precio": 990,
+    "stock": 85
+  }
+]

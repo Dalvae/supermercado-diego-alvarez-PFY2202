@@ -1,51 +1,90 @@
-import { createContext, useContext, useReducer } from 'react'
-
-// estado global de los articulos, lo uso con context + useReducer como en el ejemplo avanzado de la guia
-// asi el formulario y la tabla ven la misma lista sin pasar props por todos lados
+import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import articulosIniciales from '../articulos.json'
 
 const ArticulosContext = createContext(null)
 
-// algunos para que la tabla no parta vacia
-const iniciales = [
-  { id: 1, nombre: 'Arroz grado 1 (1 kg)', marca: 'Tucapel', tipo: 'Abarrotes' },
-  { id: 2, nombre: 'Leche entera (1 L)', marca: 'Colun', tipo: 'Lácteos' },
-  { id: 3, nombre: 'Café molido (250 g)', marca: 'Nescafé', tipo: 'Abarrotes' },
-  { id: 4, nombre: 'Detergente (3 L)', marca: 'Omo', tipo: 'Limpieza' },
-]
+// el carrito es una lista de { id, cantidad }, los datos del articulo se buscan en articulos por el id
+const estadoInicial = { articulos: articulosIniciales, carrito: [] }
 
-export const tipos = ['Abarrotes', 'Lácteos', 'Panadería', 'Frutas y verduras', 'Bebidas', 'Limpieza', 'Otros']
+// el estado se guarda en localStorage, el json es solo el punto de partida
+const CLAVE_GUARDADO = 'supermercado-belen'
 
-function reducer(articulos, accion) {
+function cargarEstado() {
+  const guardado = localStorage.getItem(CLAVE_GUARDADO)
+  return guardado ? JSON.parse(guardado) : estadoInicial
+}
+
+function cambiarStock(articulos, id, delta) {
+  return articulos.map((a) => (a.id === id ? { ...a, stock: a.stock + delta } : a))
+}
+
+function reducer(estado, accion) {
+  const { articulos, carrito } = estado
   switch (accion.type) {
-    case 'agregar':
-      // el id es el ultimo + 1, no hay backend todavia
-      return [...articulos, { ...accion.articulo, id: articulos.length > 0 ? articulos[articulos.length - 1].id + 1 : 1 }]
+    case 'agregar': {
+      const id = articulos.length > 0 ? articulos[articulos.length - 1].id + 1 : 1
+      return { ...estado, articulos: [...articulos, { ...accion.articulo, id }] }
+    }
     case 'eliminar':
-      return articulos.filter((a) => a.id !== accion.id)
+      return {
+        articulos: articulos.filter((a) => a.id !== accion.id),
+        carrito: carrito.filter((c) => c.id !== accion.id),
+      }
+    case 'agregarAlCarrito': {
+      // sumar al carrito es restar del inventario, si no hay stock no pasa nada
+      const articulo = articulos.find((a) => a.id === accion.id)
+      if (!articulo || articulo.stock <= 0) return estado
+      const yaEsta = carrito.some((c) => c.id === accion.id)
+      const nuevoCarrito = yaEsta
+        ? carrito.map((c) => (c.id === accion.id ? { ...c, cantidad: c.cantidad + 1 } : c))
+        : [...carrito, { id: accion.id, cantidad: 1 }]
+      return { articulos: cambiarStock(articulos, accion.id, -1), carrito: nuevoCarrito }
+    }
+    case 'cambiarCantidad': {
+      const articulo = articulos.find((a) => a.id === accion.id)
+      const linea = carrito.find((c) => c.id === accion.id)
+      if (!articulo || !linea) return estado
+      if (accion.delta > 0 && articulo.stock <= 0) return estado
+      const nuevaCantidad = linea.cantidad + accion.delta
+      const nuevoCarrito =
+        nuevaCantidad <= 0
+          ? carrito.filter((c) => c.id !== accion.id)
+          : carrito.map((c) => (c.id === accion.id ? { ...c, cantidad: nuevaCantidad } : c))
+      return { articulos: cambiarStock(articulos, accion.id, -accion.delta), carrito: nuevoCarrito }
+    }
+    case 'restablecer':
+      return estadoInicial
     default:
-      return articulos
+      return estado
   }
 }
 
 export function ArticulosProvider({ children }) {
-  const [articulos, dispatch] = useReducer(reducer, iniciales)
+  const [estado, dispatch] = useReducer(reducer, null, cargarEstado)
 
-  function agregarArticulo(articulo) {
-    dispatch({ type: 'agregar', articulo })
-  }
+  useEffect(() => {
+    localStorage.setItem(CLAVE_GUARDADO, JSON.stringify(estado))
+  }, [estado])
 
-  function eliminarArticulo(id) {
-    dispatch({ type: 'eliminar', id })
-  }
+  // useMemo para no armar el objeto de nuevo en cada render
+  const valor = useMemo(() => {
+    const carrito = estado.carrito.map((c) => ({ ...estado.articulos.find((a) => a.id === c.id), cantidad: c.cantidad }))
+    return {
+      articulos: estado.articulos,
+      carrito,
+      totalCarrito: carrito.reduce((suma, c) => suma + c.precio * c.cantidad, 0),
+      unidadesCarrito: carrito.reduce((suma, c) => suma + c.cantidad, 0),
+      agregarArticulo: (articulo) => dispatch({ type: 'agregar', articulo }),
+      eliminarArticulo: (id) => dispatch({ type: 'eliminar', id }),
+      agregarAlCarrito: (id) => dispatch({ type: 'agregarAlCarrito', id }),
+      cambiarCantidad: (id, delta) => dispatch({ type: 'cambiarCantidad', id, delta }),
+      restablecer: () => dispatch({ type: 'restablecer' }),
+    }
+  }, [estado])
 
-  return (
-    <ArticulosContext.Provider value={{ articulos, agregarArticulo, eliminarArticulo }}>
-      {children}
-    </ArticulosContext.Provider>
-  )
+  return <ArticulosContext.Provider value={valor}>{children}</ArticulosContext.Provider>
 }
 
-// para no importar useContext y el contexto en cada pagina
 export function useArticulos() {
   return useContext(ArticulosContext)
 }

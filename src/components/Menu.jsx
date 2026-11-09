@@ -1,13 +1,12 @@
 import { NavLink } from 'react-router-dom'
 
 const links = [
-  { ruta: '/', texto: 'Inventario' },
+  { ruta: '/articulos', texto: 'Inventario' },
   { ruta: '/quienes-somos', texto: 'Quiénes somos' },
   { ruta: '/tiendas', texto: 'Nuestra tienda' },
 ]
 
 function Menu() {
-  // NavLink ya sabe si esta activo, asi no uso useLocation
   function clase({ isActive }) {
     if (isActive) {
       return 'px-3 sm:px-4 py-2 rounded-full text-sm whitespace-nowrap font-semibold bg-blue-900 text-white'
